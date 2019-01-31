@@ -1,0 +1,12 @@
+var mongoose = require('mongoose');
+//定义 用户结构
+module.exports =  new  mongoose.Schema({
+    //用户名和密码
+    username:String,
+    password:String,
+    //判断用户是否是管理员
+    Admin:{
+        type:Boolean,
+        defult:false
+    }
+})
