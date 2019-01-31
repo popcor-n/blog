@@ -16,7 +16,8 @@ var responseData;
 router.use(function(req,res,next){
     responseData = {
         code:0,//默认为0  代表没有错误
-        message:''//当code 不为0 的时候 代表错误信息 
+        message:'',//当code 不为0 的时候 代表错误信息 
+        isadmin:false
     }
     next();
 })
@@ -71,6 +72,7 @@ router.post('/user/register',function(req,res,next){
 //登录  后台逻辑
 
 router.post('/user/login',function(req,res){
+    console.log(req.body);
     var username = req.body.username;
     var password = req.body.password;
     if(username == '' || password == ''){
@@ -91,6 +93,17 @@ router.post('/user/login',function(req,res){
             return;
         }
         responseData.message = '登录成功';
+        if(username == 'admin'){
+            responseData.isadmin = true;
+        }
+        responseData.userData ={
+            id:userInfo._id,
+            name:userInfo.username
+        } 
+        // req.cookies.set('userInfo',JSON.stringify({
+        //     id:userInfo._id,
+        //     name:userInfo.username
+        // } ));
         res.json(responseData);
                 
     })
