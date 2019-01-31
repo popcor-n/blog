@@ -18,6 +18,10 @@
     "html-withimg-loader": "^0.1.16",
     "style-loader": "^0.23.1",
     "webpack-dev-server": "^3.1.14"
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
