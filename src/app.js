@@ -1,29 +1,29 @@
-import css from './app.sass'
+import scss from './app.scss'
 
 console.log('hello world');
 
-document.getElementById('re-log').addEventListener('click',function(){
-    setTimeout(() => {
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('register').style.display = 'none';
-    }, 500);
+// document.getElementById('re-log').addEventListener('click',function(){
+//     setTimeout(() => {
+//         document.getElementById('login').style.display = 'block';
+//         document.getElementById('register').style.display = 'none';
+//     }, 500);
     
-})
-document.getElementById('log-re').addEventListener('click',function(){
-    setTimeout(() => {
-        document.getElementById('register').style.display = 'block';
-        document.getElementById('login').style.display = 'none';
-    }, 500);
+// })
+// document.getElementById('log-re').addEventListener('click',function(){
+//     setTimeout(() => {
+//         document.getElementById('register').style.display = 'block';
+//         document.getElementById('login').style.display = 'none';
+//     }, 500);
    
     
-})
+// })
 
 var reg = document.getElementById('register');//注册 前端逻辑
 reg.getElementsByTagName('button')[0].addEventListener('click',function(){
-    setTimeout(() => {
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('register').style.display = 'none';
-    }, 1000);
+    // setTimeout(() => {
+    //     document.getElementById('login').style.display = 'block';
+    //     document.getElementById('register').style.display = 'none';
+    // }, 1000);
 
     var xhrReg = new XMLHttpRequest();
     xhrReg.onload = function(){
@@ -43,19 +43,43 @@ reg.getElementsByTagName('button')[0].addEventListener('click',function(){
 
 var log = document.getElementById('login');//登录 前端逻辑
 log.getElementsByTagName('button')[0].addEventListener('click',function(){
-  
+    var jsonl = {
+        'username':document.getElementsByClassName('user')[1].value,
+        'password':document.getElementsByClassName('pass')[1].value,
+    }
 
     var xhrLog = new XMLHttpRequest();
+    
+    // xhrLog.withCredentials = true;    
     xhrLog.onload = function(){
         console.log(JSON.parse(xhrLog.responseText));
         var outputLog = JSON.parse(xhrLog.responseText);
-       log.getElementsByClassName('index')[0].innerHTML = outputLog.message;
+        log.getElementsByClassName('index')[0].innerHTML = outputLog.message;
+
+        //管理员
+        if(outputLog.isadmin == true){
+            document.getElementById('userData').innerHTML = '你好，管理员！'
+        }else{
+            document.getElementById('userData').innerHTML = '你好，欢迎'+outputLog.userData.name;
+
+        }
     }
     xhrLog.open('POST','http://localhost:8081/api/user/login',true);
-    var json = {
-        'username':document.getElementsByClassName('user')[0].value,
-        'password':document.getElementsByClassName('pass')[0].value,
-    }
+   
     xhrLog.setRequestHeader("Content-type","application/json");
-    xhrLog.send(JSON.stringify(json));
+    xhrLog.send(JSON.stringify(jsonl));
 })
+
+
+//首页展示
+var nav = document.getElementById('nav');
+for(let i = 0; i < 4; i++){
+    nav.getElementsByClassName('index')[i].addEventListener('click',function(){
+        if(nav.getElementsByClassName('current')[0]){
+            nav.getElementsByClassName('current')[0].classList.remove('current');
+        }
+        this.classList.add('current');
+    })
+}
+
+
