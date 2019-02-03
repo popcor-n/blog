@@ -1,23 +1,6 @@
 import scss from './index.scss';
 console.log('hello home');
 console.log('hello world');
-
-// document.getElementById('re-log').addEventListener('click',function(){
-//     setTimeout(() => {
-//         document.getElementById('login').style.display = 'block';
-//         document.getElementById('register').style.display = 'none';
-//     }, 500);
-    
-// })
-// document.getElementById('log-re').addEventListener('click',function(){
-//     setTimeout(() => {
-//         document.getElementById('register').style.display = 'block';
-//         document.getElementById('login').style.display = 'none';
-//     }, 500);
-   
-    
-// })
-
 var reg = document.getElementById('register');//注册 前端逻辑
 reg.getElementsByTagName('button')[0].addEventListener('click',function(){
     // setTimeout(() => {
@@ -59,6 +42,7 @@ log.getElementsByTagName('button')[0].addEventListener('click',function(){
         //管理员
         if(outputLog.isadmin == true){
             document.getElementById('userData').innerHTML = '你好，管理员！'
+            document.getElementById('admin').innerHTML = '<a href = http://localhost:8081/admin>管理页</a>';
         }else{
             document.getElementById('userData').innerHTML = '你好，欢迎'+outputLog.userData.name;
 
