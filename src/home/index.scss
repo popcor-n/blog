@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    a{
+      text-decoration:none; 
+      color:#333; 
+    }
+    header{
+      padding: 60px 0 0;
+      text-align: center;
+      #title{
+        color: #555;
+        font: bold 35px/1.22 "Times New Roman", Georgia, Times, sans-serif;
+      }
+      div{
+        position: relative;
+        a{
+          
+          text-decoration: none;
+          padding: 7px 18px 6px;
+          color: #fff;
+          background-color: #999;
+          position: relative;
+          z-index: 4;
+          font-size: 14px;
+          line-height: 1.5;
+          display: inline-block;
+          margin: 20px 10px;
+        }
+      }
+    }
+  }
+  header .current a{
+    background-color: #555;
+  }
+  header .index{
+    display: inline-block;
+    transition:top 3s ease-in-out;
+  }
+  header .index:hover{
+    top:-3px;
+  }
+  
+  #register,#login,#userData{
+    border:1px solid black;
+    position: relative;
+    width:200px;
+  }
