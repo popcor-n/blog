@@ -56,7 +56,8 @@ module.exports = {
                   options: {
                       name: '[name].[ext]',
                       publicPath: "./images/",
-                      outputPath: "images/"
+                      outputPath: "about/images/",
+                      outputPath:"home/images/"
                     }
                   }
                 ]    
@@ -70,10 +71,11 @@ module.exports = {
                       minimize: true
                   }
               }
-            }
-      
+            },
+          
           ]
         },
         devServer:{
+            
             open:true
 }}
