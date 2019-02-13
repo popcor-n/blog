@@ -7,8 +7,47 @@
     <title>Document</title>
 </head>
 <body>
-    <div>后台管理
-        写给自己看，也得好看
+    
+    <div id="passBox">
+        <div id="pass">
+            <input type="password" placeholder=" 请再一次输入管理员密码">
+            <div id="bt">确认</div>
+        </div>
+        <div id="passCover"></div>
     </div>
+   <div id="title">
+       <ul>
+           <li id="main"><a href="http://localhost:8081/admin">后台管理</a></li>
+           <li id="user"><a href="#user" id="a_user">用户管理</a></li>
+           <li id="admin">海</li>
+           <li id="day"></li>
+       </ul>
+   </div>
+   <div id="titleNext">
+       <ol>
+           <li id="return"><a href="http://localhost:8081/admin">管理首页</a></li>
+           <li>/</li>
+           <li class="index"></li>
+       </ol>
+   </div>
+
+   <div id="show_box">
+       <div id="userdata" style="display: none">
+           <table>
+               <tbody>
+                   <tr>
+                       <th>id</th>
+                       <th>用户名</th>
+                       <th>密码</th>
+                   </tr>
+                   <tr>
+                       <td>#</td>
+                       <td>#</td>
+                       <td>#</td>
+                   </tr>
+               </tbody>
+           </table>
+       </div>
+   </div>
 </body>
 </html>
