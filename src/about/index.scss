@@ -33,6 +33,10 @@ ul li{
         position: relative;
         left: 60px;
     }
+    #classify{
+        position: relative;
+        left: 100px;
+    }
     #admin{
         position: relative;
         left: 1066px;
@@ -93,11 +97,12 @@ ul li{
     display: none;
     background-color: #f0ebe5;
     position: relative;
-    top: 20px;
+    top: 42px;
     width: 1400px;
     left: 60px;
     border-radius: 15px;
     height: 23px;
+    z-index: 1;
     li{
         position: relative;
         left: 20px;
@@ -112,40 +117,83 @@ ul li{
     }
     .index{
         margin-left: 20px;
-        color: rgb(124, 169, 226)
+        // color: rgb(124, 169, 226)
+        #class_add,#class_handle{
+            cursor: pointer;
+        }
     }
+
     
    
 }
+#show_box{
+    #userdata{
+        table{
+            width:100%;
+            margin:15px 0;
+            border:0;
+            position: relative;
+            top: -15px;
+            
+            th{
+                font-weight:bold;
+                background-color:#f7f4f1;
+                color:rgb(141, 135, 135);
+                border: 1px solid #e7f6fe;
+                border-width:1px 0 1px 0
+            }
+            td {
+                border: 1px solid #eeeeee;
+                border-width:1px 0 1px 0
+            }
+             tr {
+                border: 1px solid #ffffff;
+            }
+            th,td {
+                font-size:0.95em;
+                padding:4px;
+                border-collapse:collapse;
+                border: 1px solid #eee8e8b6;
+                border-width:1px;
+                color: #888;
+            }
+        }
+        #pic{
+            background-image: url(./images/sheng.png);
+            background-size: 27px;
+            width: 27px;
+            height: 153px;
+            position: relative;
+            top: 18px;
+            left: 204px;
+            opacity: 0.7;
+        }
+    } 
+    #blogclass{
+        #addclass{
+            display: block;
+            position: relative;
+            top: 170px;
+            input{
+                outline: #888;
+                color: #888;
+                border-radius: 10px;
+                width: 80%;
+                height: 31px;
+                font-size: 17px;
+                padding: 0 10px;
+                display: inherit;
+                margin: 0 auto;
+            }
+        }
+        
+    }
+    
+}
 
-table {
-	width:100%;
-	margin:15px 0;
-    border:0;
-    position: relative;
-    top: 50px;
-}
-th {
-	font-weight:bold;
-	background-color:#f7f4f1;
-    color:rgb(141, 135, 135);
-    border: 1px solid #e7f6fe;
-	border-width:1px 0 1px 0
-}
-th,td {
-	font-size:0.95em;
-	padding:4px;
-    border-collapse:collapse;
-    border: 1px solid #ffffff;
-	border-width:1px;
-}
-td {
-	border: 1px solid #eeeeee;
-	border-width:1px 0 1px 0
-}
- tr {
-	border: 1px solid #ffffff;
-}
+
+
+
 
 
     
