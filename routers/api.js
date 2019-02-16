@@ -22,17 +22,17 @@ router.use(function(req,res,next){
     next();
 })
 router.post('/user/register',function(req,res,next){
-   console.log(req.body);
-   var username = req.body.username;
-   var password = req.body.password;
-   var rePassword = req.body.rePassword;
-   if(username == ''){
-       responseData.code = 1;
-       responseData.message = '用户名不能为空';
-       res.json(responseData);
-       return;
-   }
-   if(password == ''){
+    console.log(req.body);
+    var username = req.body.username;
+    var password = req.body.password;
+    var rePassword = req.body.rePassword;
+    if(username == ''){
+        responseData.code = 1;
+        responseData.message = '用户名不能为空';
+        res.json(responseData);
+        return;
+    }
+    if(password == ''){
         responseData.code = 2;
         responseData.message = '密码不能为空';
         res.json(responseData);
@@ -44,7 +44,7 @@ router.post('/user/register',function(req,res,next){
         res.json(responseData);
         return;
     }
-
+   
     User.findOne({
         username:username,
     }).then(function(userInfo){
@@ -52,20 +52,18 @@ router.post('/user/register',function(req,res,next){
             //数据库存在该信息 不存在的话 值为null
             responseData.code = 4;
             responseData.message = '该用户名已存在';
-            res.json(responseData);
-            return;
+        }else{
+            var user = new User({
+                username : username,
+                password : password  
+                });
+            user.save();
+            responseData.message = '注册成功！';
         }
-        //数据库 保存
-        var user = new User({
-          username : username,
-          password : password  
-        });
-        return user.save();
-    }).then(function (newUserInfo){
-        // console.log(newUserInfo);
-        responseData.message = '注册成功！';
         res.json(responseData);
     })
+    
+    
    
 })
 
