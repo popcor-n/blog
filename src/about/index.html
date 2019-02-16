@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <!-- 密码确认卡 -->
     <div id="passBox">
         <div id="pass">
             <input type="password" placeholder=" 请再一次输入管理员密码">
@@ -15,14 +15,17 @@
         </div>
         <div id="passCover"></div>
     </div>
+    <!-- 主选项卡 -->
    <div id="title">
        <ul>
            <li id="main"><a href="http://localhost:8081/admin">后台管理</a></li>
            <li id="user"><a href="#user" id="a_user">用户管理</a></li>
+           <li id="classify"><a href="#classify" id="a_class">博文分类</a></li>
            <li id="admin">海</li>
            <li id="day"></li>
        </ul>
    </div>
+   <!-- 副选项卡 -->
    <div id="titleNext">
        <ol>
            <li id="return"><a href="http://localhost:8081/admin">管理首页</a></li>
@@ -30,24 +33,34 @@
            <li class="index"></li>
        </ol>
    </div>
-
+<!-- 展示区 -->
    <div id="show_box">
+       <!-- 用户列表展示区 -->
        <div id="userdata" style="display: none">
+           <!-- 绳子 -->
+           <div id="pic"></div>
            <table>
-               <tbody>
+               <tbody id="usertable">
                    <tr>
                        <th>id</th>
                        <th>用户名</th>
                        <th>密码</th>
-                   </tr>
-                   <tr>
-                       <td>#</td>
-                       <td>#</td>
-                       <td>#</td>
+                       <th>是否是管理员</th>
                    </tr>
                </tbody>
            </table>
        </div>
+
+       <div id="blogclass" style="display: none"> 
+             <!-- 添加博客分类表单 -->
+            <div id="addclass" >
+                <input type="text" placeholder="请输入分类名称" id="addclass_ip">
+                <div id="go_name">提交</div>
+                <div id="remind"></div>
+                <div class="show"></div>
+            </div>
+        </div>
+      
    </div>
 </body>
 </html>
