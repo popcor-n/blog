@@ -115,7 +115,7 @@ ul li{
     #return{
         margin-right: 20px;
     }
-    .index{
+    .index,.index1{
         margin-left: 20px;
         // color: rgb(124, 169, 226)
         #class_add,#class_handle{
@@ -127,7 +127,7 @@ ul li{
    
 }
 #show_box{
-    #userdata{
+    
         table{
             width:100%;
             margin:15px 0;
@@ -160,20 +160,19 @@ ul li{
         }
         #pic{
             background-image: url(./images/sheng.png);
-            background-size: 27px;
+            background-size: 28px;
             width: 27px;
-            height: 153px;
+            height: 154px;
             position: relative;
             top: 18px;
             left: 204px;
-            opacity: 0.7;
+            opacity: 0.6;
         }
-    } 
+    
     #blogclass{
         #addclass{
             display: block;
             position: relative;
-            top: 170px;
             input{
                 outline: #888;
                 color: #888;
@@ -184,6 +183,11 @@ ul li{
                 padding: 0 10px;
                 display: inherit;
                 margin: 0 auto;
+            }
+        }
+        #modifyclclass{
+            a{
+                color: #888;
             }
         }
         
