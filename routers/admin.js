@@ -28,6 +28,7 @@ User.find().then(function(users){
 //博文分类
 router.post('/classify',function(req,res){
     // console.log(req.body);
+    res.json({req:'getten'});
 })
 router.post('/classify/add',function(req,res){
     console.log(req.body);
@@ -45,6 +46,13 @@ router.post('/classify/add',function(req,res){
             classify.save();
             Responsedata.message = '添加成功！';
         }
+        res.json(Responsedata);
+    })
+})
+Classify.find().then(function(classify){
+    router.post('/classify/handle',function(req,res){
+        // console.log(req.body);
+        Responsedata.message = classify;
         res.json(Responsedata);
     })
 })
