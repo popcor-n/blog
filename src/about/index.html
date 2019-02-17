@@ -20,7 +20,7 @@
        <ul>
            <li id="main"><a href="http://localhost:8081/admin">后台管理</a></li>
            <li id="user"><a href="#user" id="a_user">用户管理</a></li>
-           <li id="classify"><a href="#classify" id="a_class">博文分类</a></li>
+           <li id="classify"><a href="#class" id="a_class">博文分类</a></li>
            <li id="admin">海</li>
            <li id="day"></li>
        </ul>
@@ -30,15 +30,21 @@
        <ol>
            <li id="return"><a href="http://localhost:8081/admin">管理首页</a></li>
            <li>/</li>
-           <li class="index"></li>
+           <li class="index">用户列表</li>
+           <li class="index1" style="display: none">
+               <span id="class_add">添加分类</span>
+               <span>-</span>               
+               <span id="class_handle">管理分类</span>
+            </li>
        </ol>
    </div>
 <!-- 展示区 -->
    <div id="show_box">
        <!-- 用户列表展示区 -->
+       <div id="pic" style="display: none"></div>
+       
        <div id="userdata" style="display: none">
            <!-- 绳子 -->
-           <div id="pic"></div>
            <table>
                <tbody id="usertable">
                    <tr>
@@ -58,6 +64,17 @@
                 <div id="go_name">提交</div>
                 <div id="remind"></div>
                 <div class="show"></div>
+            </div>
+            <div id="modifyclclass" style="display: none">
+                <table>
+                    <tbody id="classtable">
+                        <tr>
+                            <th>分类名</th>
+                            <th>id</th>
+                            <th>操作</th>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
       
