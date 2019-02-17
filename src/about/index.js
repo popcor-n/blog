@@ -36,26 +36,15 @@ document.getElementById('day').innerHTML =  myDate.getFullYear() + '年' + (myDa
 //ajax用户管理
 //选项卡单独操作
 var titleol =  document.getElementsByTagName('ol')[0];//副选项卡选中
-//用户列表
-document.getElementById('user').addEventListener('click',function(){
-    document.getElementsByTagName('ol')[0].style.display = 'inline-block'; 
-    document.getElementById('userdata').style.display = 'block';
-    document.getElementById('blogclass').style.display = 'none';
-    titleol.getElementsByClassName('index')[0].innerHTML = '用户列表';  
-    document.getElementById('a_user').style.color = 'rgb(124, 169, 226)';
-    document.getElementById('a_class').style.color = '#888';
-    
-})
-//博文分类逻辑
-document.getElementById('classify').addEventListener('click',function(){
-    document.getElementById('blogclass').style.display = 'block';    
-    document.getElementsByTagName('ol')[0].style.display = 'inline-block';     
-    document.getElementById('userdata').style.display = 'none';
-    //让该展示的副选项卡部分展示
-    titleol.getElementsByClassName('index')[0].innerHTML = '<span id= "class_add">添加分类</span><span> - </span><span id= "class_handle">分类管理</span>';  
-    document.getElementById('a_class').style.color = 'rgb(124, 169, 226)';
-    document.getElementById('a_user').style.color = '#888';
+//处理分类两个选项逻辑
+document.getElementById('class_add').addEventListener('click', function (){
     document.getElementById('addclass').style.display = 'block';
+    document.getElementById('modifyclclass').style.display = 'none';
+    document.getElementById('pic').style.left ='204px';
+})
+document.getElementById('class_handle').addEventListener('click', function(){
+    document.getElementById('addclass').style.display = 'none';
+    document.getElementById('modifyclclass').style.display = 'block';
 })
 //增加分类的ajax 逻辑
 document.getElementById('go_name').addEventListener('click',function(){
@@ -63,8 +52,7 @@ document.getElementById('go_name').addEventListener('click',function(){
     xhraddclass.onload = function(){
         var output = JSON.parse(xhraddclass.responseText);
         console.log(output);
-        
-         document.getElementById('remind').innerHTML = output.message.toString();
+        document.getElementById('remind').innerHTML = output.message.toString();
         document.getElementById('remind').style.display = 'block';        
         setTimeout(() => {
             document.getElementById('remind').style.display = 'none';
@@ -85,11 +73,64 @@ document.getElementById('go_name').addEventListener('click',function(){
     }
 })
 
+//分类列表ajax逻辑
+function classmod (){console.log('classmod');}
+document.getElementById('class_handle').addEventListener('click',function(){
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(){
+        var output = JSON.parse(xhr.responseText);
+        console.log(output);
+        document.getElementById('pic').style.left ='290px';
+        for(var i in output.message){
+            var tr = document.createElement('tr');
+            tr.setAttribute('id','class_'+i.toString());
+            document.getElementById('classtable').appendChild(tr);
+            document.getElementById('class_'+i.toString()).innerHTML = '<td>'+output.message[i].name.toString()+ '</td><td>'+ output.message[i]._id.toString()+ '</td><td><a href="#class-modify" id='+"classmod"+i.toString() + ' onclick='+ "classmod()"+'>修改<a> - <a href="#class-delete" id='+"classedi"+i.toString() +'>删除<a></td>';
+            
+        }
+    }
+    xhr.open('POST','http://localhost:8081/admin/classify/handle',true)
+    xhr.setRequestHeader("Content-type","application/json");
+    xhr.send(JSON.stringify({req:'classdata'}));
+})
 //spa
 window.addEventListener('hashchange',function(){
     var hash = document.location.hash;
-    var xhruser = new XMLHttpRequest();
-    if(hash == '#user'){
+    var pic = document.getElementById('pic');
+    pic.style.display = 'inline-block';
+    pic.style.left ='204px';
+    
+    if(hash == '#class'){
+        // this.console.log('class');
+        document.getElementById('classify').onclick = function(){
+            console.log('class');
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+            var output = JSON.parse(xhr.responseText);
+            console.log(output);
+            document.getElementById('userdata').style.display = 'none';
+            
+            document.getElementById('blogclass').style.display = 'block';    
+            document.getElementsByTagName('ol')[0].style.display = 'inline-block';     
+            //让该展示的副选项卡部分展示
+          
+            titleol.getElementsByClassName('index1')[0].style.display = 'inline-block';
+            titleol.getElementsByClassName('index')[0].style.display = 'none';
+            
+            document.getElementById('a_class').style.color = 'rgb(124, 169, 226)';
+            document.getElementById('a_user').style.color = '#888';
+            document.getElementById('addclass').style.display = 'block';
+            document.getElementById('modifyclclass').style.display = 'none';
+        }
+        xhr.open('POST','http://localhost:8081/admin/classify',true);
+        xhr.setRequestHeader("Content-type","application/json");
+        var c_json = {req:'classify'};
+        xhr.send(JSON.stringify(c_json));
+    }
+        
+   else if(hash == '#user'){
+        var xhruser = new XMLHttpRequest();
         xhruser.onload = function(){
             var output = JSON.parse(xhruser.responseText);
             console.log(output);
@@ -107,6 +148,13 @@ window.addEventListener('hashchange',function(){
                     document.getElementById('user_'+i.toString()).innerHTML += '<td>否</td>'                    
                 }
             }
+            document.getElementsByTagName('ol')[0].style.display = 'inline-block'; 
+            document.getElementById('userdata').style.display = 'block';
+            document.getElementById('blogclass').style.display = 'none';
+            titleol.getElementsByClassName('index1')[0].style.display = 'none';
+            titleol.getElementsByClassName('index')[0].style.display = 'inline-block'; 
+            document.getElementById('a_user').style.color = 'rgb(124, 169, 226)';
+            document.getElementById('a_class').style.color = '#888';
         
         }
         xhruser.open('POST','http://localhost:8081/admin/user',true);
@@ -115,23 +163,7 @@ window.addEventListener('hashchange',function(){
         xhruser.send(JSON.stringify(u_json));
         
     }
-    else if(hash == '#classify'){
-        var xhrclass = new XMLHttpRequest();
-        xhrclass.onload = function(){
-            var output = JSON.parse(xhruser.responseText);
-            console.log(output);
-            //填充副选项卡选择逻辑以及showbox展示部分
-            
-          
-
-
-
-        }
-        xhrclass.open('POST','http://localhost:8081/admin/classify',true);
-        xhrclass.setRequestHeader("Content-type","application/json");
-        var c_json = {req:'classify'};
-        xhrclass.send(JSON.stringify(c_json));
-    }
+    
 
 
 
