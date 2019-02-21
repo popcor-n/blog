@@ -32,9 +32,11 @@
            <li>/</li>
            <li class="index">用户列表</li>
            <li class="index1" style="display: none">
-               <span id="class_add">添加分类</span>
+               <span id="class_add"><a href="#add">添加分类</a></span>
                <span>-</span>               
-               <span id="class_handle">管理分类</span>
+               <span id="class_handle"><a href="#handle">管理分类</a> </span>                              
+               <span id="class_mod" style="display: none"> - 修改类名</span>
+               <span id="class_del" style="display: none"> - 删除类名</span>               
             </li>
        </ol>
    </div>
@@ -65,7 +67,17 @@
                 <div id="remind"></div>
                 <div class="show"></div>
             </div>
-            <div id="modifyclclass" style="display: none">
+            <div id="modclass" style="display: none" >
+                <input type="text" id="modclass_ip1">
+                <input type="text" placeholder="请输入分类名称" id="modclass_ip2">
+                <div id="re_name">提交</div>
+                <div class="show"></div>
+            </div>
+            <div id="delclass" style="display: none">
+                <span id="del_ask">确定要删除嘛？</span>
+                <span id="del_yes">确定</span><span id="del_no">取消</span>
+            </div>
+            <div id="handleclass" style="display: none">
                 <table>
                     <tbody id="classtable">
                         <tr>
