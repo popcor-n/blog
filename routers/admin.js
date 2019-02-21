@@ -39,6 +39,7 @@ router.post('/classify/add',function(req,res){
         if(fs){
             Responsedata.code = 1;
             Responsedata.message = '要添加的分类名称已存在';
+            console.log(fs);
         }else{
             var classify = new Classify({
                 name:name
@@ -55,5 +56,18 @@ Classify.find().then(function(classify){
         Responsedata.message = classify;
         res.json(Responsedata);
     })
+})
+router.post('/classify/modify',function(req,res){
+    console.log(req.body);
+    var name = req.body.name;
+    var id = req.body.id;
+    Classify.findOne({_id:id}).then(function(fs){
+        console.log(fs);
+        fs.name = name;
+        fs.save();
+        Responsedata.message = '修改成功';
+        res.json(Responsedata);
+    })
+   
 })
 module.exports = router;
