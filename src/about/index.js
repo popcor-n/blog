@@ -39,18 +39,20 @@ var titleol =  document.getElementsByTagName('ol')[0];//副选项卡选中
 //处理分类两个选项逻辑
 document.getElementById('class_add').addEventListener('click', function (){
     document.getElementById('addclass').style.display = 'block';
-    document.getElementById('modifyclclass').style.display = 'none';
+    document.getElementById('handleclass').style.display = 'none';
     document.getElementById('pic').style.left ='204px';
+    document.getElementById('modclass').style.display = 'none';
+    document.getElementById('class_mod').style.display = 'none';    
 })
 document.getElementById('class_handle').addEventListener('click', function(){
     document.getElementById('addclass').style.display = 'none';
-    document.getElementById('modifyclclass').style.display = 'block';
+    document.getElementById('handleclass').style.display = 'block';
 })
 //增加分类的ajax 逻辑
 document.getElementById('go_name').addEventListener('click',function(){
-    var xhraddclass = new XMLHttpRequest();
-    xhraddclass.onload = function(){
-        var output = JSON.parse(xhraddclass.responseText);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function(){
+        var output = JSON.parse(xhr.responseText);
         console.log(output);
         document.getElementById('remind').innerHTML = output.message.toString();
         document.getElementById('remind').style.display = 'block';        
@@ -58,11 +60,11 @@ document.getElementById('go_name').addEventListener('click',function(){
             document.getElementById('remind').style.display = 'none';
         }, 3000);
     }
-    xhraddclass.open('POST','http://localhost:8081/admin/classify/add',true)
-    xhraddclass.setRequestHeader("Content-type","application/json");
+    xhr.open('POST','http://localhost:8081/admin/classify/add',true)
+    xhr.setRequestHeader("Content-type","application/json");
     var name = document.getElementById('addclass_ip').value;
     if(name){
-        xhraddclass.send(JSON.stringify({name:name}));
+        xhr.send(JSON.stringify({name:name}));
     }else{
         document.getElementById('remind').innerHTML = '分类名不能为空';
         document.getElementById('remind').style.display = 'block';        
@@ -74,18 +76,23 @@ document.getElementById('go_name').addEventListener('click',function(){
 })
 
 //分类列表ajax逻辑
-function classmod (){console.log('classmod');}
+var data_class;
 document.getElementById('class_handle').addEventListener('click',function(){
+    document.getElementById('handleclass').style.display = 'block';
+    document.getElementById('modclass').style.display = 'none';
+    document.getElementById('class_mod').style.display = 'none';
     var xhr = new XMLHttpRequest();
     xhr.onload = function(){
         var output = JSON.parse(xhr.responseText);
         console.log(output);
+        data_class =  output.message;
+        console.log(data_class);
         document.getElementById('pic').style.left ='290px';
         for(var i in output.message){
             var tr = document.createElement('tr');
             tr.setAttribute('id','class_'+i.toString());
             document.getElementById('classtable').appendChild(tr);
-            document.getElementById('class_'+i.toString()).innerHTML = '<td>'+output.message[i].name.toString()+ '</td><td>'+ output.message[i]._id.toString()+ '</td><td><a href="#class-modify" id='+"classmod"+i.toString() + ' onclick='+ "classmod()"+'>修改<a> - <a href="#class-delete" id='+"classedi"+i.toString() +'>删除<a></td>';
+            document.getElementById('class_'+i.toString()).innerHTML = '<td>'+output.message[i].name.toString()+ '</td><td>'+ output.message[i]._id.toString()+ '</td><td><a href='+"#class-modify"+i.toString()+'>修改<a> - <a href='+"#class-delete"+i.toString() +'>删除<a></td>';
             
         }
     }
@@ -93,6 +100,7 @@ document.getElementById('class_handle').addEventListener('click',function(){
     xhr.setRequestHeader("Content-type","application/json");
     xhr.send(JSON.stringify({req:'classdata'}));
 })
+
 //spa
 window.addEventListener('hashchange',function(){
     var hash = document.location.hash;
@@ -102,9 +110,6 @@ window.addEventListener('hashchange',function(){
     
     if(hash == '#class'){
         // this.console.log('class');
-        document.getElementById('classify').onclick = function(){
-            console.log('class');
-        }
         var xhr = new XMLHttpRequest();
         xhr.onload = function(){
             var output = JSON.parse(xhr.responseText);
@@ -121,12 +126,16 @@ window.addEventListener('hashchange',function(){
             document.getElementById('a_class').style.color = 'rgb(124, 169, 226)';
             document.getElementById('a_user').style.color = '#888';
             document.getElementById('addclass').style.display = 'block';
-            document.getElementById('modifyclclass').style.display = 'none';
+            document.getElementById('handleclass').style.display = 'none';
+            document.getElementById('modclass').style.display = 'none';
+            
         }
         xhr.open('POST','http://localhost:8081/admin/classify',true);
         xhr.setRequestHeader("Content-type","application/json");
         var c_json = {req:'classify'};
         xhr.send(JSON.stringify(c_json));
+        document.getElementById('class_mod').style.display = 'none';
+        
     }
         
    else if(hash == '#user'){
@@ -155,14 +164,77 @@ window.addEventListener('hashchange',function(){
             titleol.getElementsByClassName('index')[0].style.display = 'inline-block'; 
             document.getElementById('a_user').style.color = 'rgb(124, 169, 226)';
             document.getElementById('a_class').style.color = '#888';
+            document.getElementById('class_mod').style.display = 'none';
         
         }
         xhruser.open('POST','http://localhost:8081/admin/user',true);
         xhruser.setRequestHeader("Content-type","application/json");
         var u_json = {req:'users'};
         xhruser.send(JSON.stringify(u_json));
+    }
+    for(var i in data_class){
+        if(hash=='#class-modify'+i.toString()){
+            // console.log(hash);
+            //先呈现一个修改框
+            //发请求到后台 ,修改分类名称
+            document.getElementById('class_mod').style.display = 'inline';
+            document.getElementById('class_del').style.display = 'none';           
+            document.getElementById('modclass').style.display='block';
+            document.getElementById('delclass').style.display='none';            
+            document.getElementById('handleclass').style.display = 'none';
+            pic.style.left = '367px';
+            document.getElementById('modclass_ip1').value = data_class[i].name;
+
+            document.getElementById('re_name').addEventListener('click',function(){
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function(){
+                    var output = JSON.parse(xhr.responseText);
+                    console.log(output);
+                    document.getElementsByClassName('show')[1].innerHTML = output.message.toString();
+                    document.getElementsByClassName('show')[1].style.display = 'block';        
+                    
+                }
+                xhr.open('POST','http://localhost:8081/admin/classify/modify',true)
+                xhr.setRequestHeader("Content-type","application/json");
+                var name = document.getElementById('modclass_ip2').value;
+                if(name){
+                    var index = 0;
+                    for(var a = 0; a < data_class.length;a++){
+                        if(data_class[a].name == name){
+                            index = 1;
+                        }
+                    }if(data_class[i].name == name){
+                        document.getElementsByClassName('show')[1].innerHTML = '修改成功';
+                    document.getElementsByClassName('show')[1].style.display = 'block';        
+                        
+                    }else if(index==1){
+                        document.getElementsByClassName('show')[1].innerHTML = '该类名已经被占用啦';
+                        document.getElementsByClassName('show')[1].style.display = 'block';        
+                    }else{
+                        xhr.send(JSON.stringify({name:name,id:data_class[i]._id}));
+                    }
+                }else{
+                    document.getElementsByClassName('show')[1].innerHTML = '分类名不能为空';
+                    document.getElementsByClassName('show')[1].style.display = 'block';        
+                }
+                setTimeout(() => {
+                    document.getElementsByClassName('show')[1].style.display = 'none';
+                }, 3000);
+            })
+        }
+        else if(hash=='#class-delete'+i.toString()){
+            document.getElementById('class_mod').style.display = 'none';
+            document.getElementById('class_del').style.display = 'inline';           
+            document.getElementById('modclass').style.display='none';
+            document.getElementById('delclass').style.display='block';                
+            document.getElementById('handleclass').style.opacity = 0.4;
+            pic.style.opacity = 0.3;
+            document.getElementById('handleclass').style.position = 'relative';
+            document.getElementById('handleclass').style.top = '-200px';
+        }
         
     }
+
     
 
 
