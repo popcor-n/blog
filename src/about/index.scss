@@ -170,6 +170,7 @@ ul li{
         }
     
     #blogclass{
+        
         #addclass{
             display: block;
             position: relative;
@@ -185,9 +186,67 @@ ul li{
                 margin: 0 auto;
             }
         }
-        #modifyclclass{
+        #handleclass{
             a{
                 color: #888;
+            }
+           
+        }
+        #modclass{
+            #rename{
+                position: relative;
+                float: right;
+                right: 316px;
+            }
+            #modclass_ip1{
+                outline: #888;
+                color: #888;
+                border-radius: 10px;
+                width: 30%;
+                height: 31px;
+                font-size: 17px;
+                padding: 0 10px;
+                display: inherit;
+                margin: 0 auto;
+                position: relative;
+                left: -308px;
+            }
+            #modclass_ip2{
+                outline: #888;
+                color: #888;
+                border-radius: 10px;
+                width: 30%;
+                height: 31px;
+                font-size: 17px;
+                padding: 0 10px;
+                display: inherit;
+                margin: 0 auto;
+                position: relative;
+                left: 200px;
+                top: -35px;
+            }
+        }
+        #delclass{
+            border: 1px solid black;
+            z-index: 1;
+            display: block;
+            width: 30%;
+            height: 200px;
+            margin: 0 auto;
+            #del_ask{
+                position: relative;
+                top: 62px;
+                left: 50px;
+            }
+            #del_yes{
+                position: relative;
+                top: 150px;
+                left: -50px;
+            }
+            #del_no{
+                position: relative;
+                left: 198px;
+                top: 150px;
             }
         }
         
