@@ -77,32 +77,11 @@ document.getElementById('go_name').addEventListener('click',function(){
 
 //分类列表ajax逻辑
 var data_class;
-document.getElementById('class_handle').addEventListener('click',function(){
-    document.getElementById('handleclass').style.display = 'block';
-    document.getElementById('modclass').style.display = 'none';
-    document.getElementById('class_mod').style.display = 'none';
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function(){
-        var output = JSON.parse(xhr.responseText);
-        console.log(output);
-        data_class =  output.message;
-        console.log(data_class);
-        document.getElementById('pic').style.left ='290px';
-        for(var i in output.message){
-            var tr = document.createElement('tr');
-            tr.setAttribute('id','class_'+i.toString());
-            document.getElementById('classtable').appendChild(tr);
-            document.getElementById('class_'+i.toString()).innerHTML = '<td>'+output.message[i].name.toString()+ '</td><td>'+ output.message[i]._id.toString()+ '</td><td><a href='+"#class-modify"+i.toString()+'>修改<a> - <a href='+"#class-delete"+i.toString() +'>删除<a></td>';
-            
-        }
-    }
-    xhr.open('POST','http://localhost:8081/admin/classify/handle',true)
-    xhr.setRequestHeader("Content-type","application/json");
-    xhr.send(JSON.stringify({req:'classdata'}));
-})
+
 
 //spa
 window.addEventListener('hashchange',function(){
+    var delname;
     var hash = document.location.hash;
     var pic = document.getElementById('pic');
     pic.style.display = 'inline-block';
@@ -128,7 +107,8 @@ window.addEventListener('hashchange',function(){
             document.getElementById('addclass').style.display = 'block';
             document.getElementById('handleclass').style.display = 'none';
             document.getElementById('modclass').style.display = 'none';
-            
+            document.getElementById('delclass').style.display='none';                
+            document.getElementById('class_del').style.display = 'none';        
         }
         xhr.open('POST','http://localhost:8081/admin/classify',true);
         xhr.setRequestHeader("Content-type","application/json");
@@ -172,11 +152,40 @@ window.addEventListener('hashchange',function(){
         var u_json = {req:'users'};
         xhruser.send(JSON.stringify(u_json));
     }
-    for(var i in data_class){
+    else if(hash == '#handle' ){
+        document.getElementById('delclass').style.display='none';    
+        document.getElementById('handleclass').style.top = 0;
+        document.getElementById('handleclass').style.opacity = 1;        
+        document.getElementById('handleclass').style.display = 'block';
+        pic.style.opacity = 0.6;
+        document.getElementById('modclass').style.display = 'none';
+        document.getElementById('class_mod').style.display = 'none';
+        document.getElementById('class_del').style.display = 'none';        
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+            var output = JSON.parse(xhr.responseText);
+            console.log(output);
+            data_class =  output.message;
+            console.log(data_class);
+            document.getElementById('pic').style.left ='290px';
+            for(var i in output.message){
+                var tr = document.createElement('tr');
+                tr.setAttribute('id','class_'+i.toString());
+                document.getElementById('classtable').appendChild(tr);
+                document.getElementById('class_'+i.toString()).innerHTML = '<td>'+output.message[i].name.toString()+ '</td><td>'+ output.message[i]._id.toString()+ '</td><td><a href='+"#class-modify"+i.toString()+'>修改<a> - <a href='+"#class-delete"+i.toString() +'>删除<a></td>';
+                
+            }
+        }
+        xhr.open('POST','http://localhost:8081/admin/classify/handle',true)
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.send(JSON.stringify({req:'classdata'}));
+    }
+    for(let i in data_class){
         if(hash=='#class-modify'+i.toString()){
             // console.log(hash);
             //先呈现一个修改框
             //发请求到后台 ,修改分类名称
+            document.getElementById('delclass').style.display='none';                            
             document.getElementById('class_mod').style.display = 'inline';
             document.getElementById('class_del').style.display = 'none';           
             document.getElementById('modclass').style.display='block';
@@ -184,26 +193,28 @@ window.addEventListener('hashchange',function(){
             document.getElementById('handleclass').style.display = 'none';
             pic.style.left = '367px';
             document.getElementById('modclass_ip1').value = data_class[i].name;
-
             document.getElementById('re_name').addEventListener('click',function(){
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function(){
                     var output = JSON.parse(xhr.responseText);
                     console.log(output);
-                    document.getElementsByClassName('show')[1].innerHTML = output.message.toString();
-                    document.getElementsByClassName('show')[1].style.display = 'block';        
+                    document.getElementsByClassName('show')[1].style.display = 'block';  
+                    document.getElementsByClassName('show')[1].innerHTML = output.message.toString();   
+                   
                     
                 }
                 xhr.open('POST','http://localhost:8081/admin/classify/modify',true)
                 xhr.setRequestHeader("Content-type","application/json");
                 var name = document.getElementById('modclass_ip2').value;
+                var id = data_class[i]._id;
                 if(name){
                     var index = 0;
                     for(var a = 0; a < data_class.length;a++){
                         if(data_class[a].name == name){
                             index = 1;
                         }
-                    }if(data_class[i].name == name){
+                    }
+                    if(data_class[i].name == name){
                         document.getElementsByClassName('show')[1].innerHTML = '修改成功';
                     document.getElementsByClassName('show')[1].style.display = 'block';        
                         
@@ -211,7 +222,7 @@ window.addEventListener('hashchange',function(){
                         document.getElementsByClassName('show')[1].innerHTML = '该类名已经被占用啦';
                         document.getElementsByClassName('show')[1].style.display = 'block';        
                     }else{
-                        xhr.send(JSON.stringify({name:name,id:data_class[i]._id}));
+                        xhr.send(JSON.stringify({name:name,oldname:document.getElementById('modclass_ip1').value}));
                     }
                 }else{
                     document.getElementsByClassName('show')[1].innerHTML = '分类名不能为空';
@@ -220,8 +231,10 @@ window.addEventListener('hashchange',function(){
                 setTimeout(() => {
                     document.getElementsByClassName('show')[1].style.display = 'none';
                 }, 3000);
+               
             })
         }
+       
         else if(hash=='#class-delete'+i.toString()){
             document.getElementById('class_mod').style.display = 'none';
             document.getElementById('class_del').style.display = 'inline';           
@@ -229,9 +242,27 @@ window.addEventListener('hashchange',function(){
             document.getElementById('delclass').style.display='block';                
             document.getElementById('handleclass').style.opacity = 0.4;
             pic.style.opacity = 0.3;
+            pic.style.left = '367px';
             document.getElementById('handleclass').style.position = 'relative';
             document.getElementById('handleclass').style.top = '-200px';
+            document.getElementById('del_index').innerHTML = data_class[i].name;
+            delname = document.getElementById('del_index').innerHTML;
+            var name = document.getElementById('del_index').innerHTML;            
+            document.getElementById('del_yes').onclick = function(){
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function(){
+                   console.log(JSON.parse(xhr.responseText));
+                    
+                }
+                xhr.open('POST','http://localhost:8081/admin/classify/delete',true)
+                xhr.setRequestHeader("Content-type","application/json");
+                xhr.send(JSON.stringify({name:delname}));
+                
+            }
+            return;
+            
         }
+        
         
     }
 
