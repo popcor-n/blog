@@ -60,8 +60,8 @@ Classify.find().then(function(classify){
 router.post('/classify/modify',function(req,res){
     console.log(req.body);
     var name = req.body.name;
-    var id = req.body.id;
-    Classify.findOne({_id:id}).then(function(fs){
+    var oldname = req.body.oldname;
+    Classify.findOne({name:oldname}).then(function(fs){
         console.log(fs);
         fs.name = name;
         fs.save();
@@ -69,5 +69,14 @@ router.post('/classify/modify',function(req,res){
         res.json(Responsedata);
     })
    
+})
+router.post('/classify/delete',function(req,res){
+    console.log(req.body);
+    var name = req.body.name;
+    Classify.deleteOne({name:name}).then(function(){
+        Responsedata.message = '删除成功';
+         res.json(Responsedata);
+    });
+    
 })
 module.exports = router;
