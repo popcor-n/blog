@@ -233,20 +233,25 @@ ul li{
             width: 30%;
             height: 200px;
             margin: 0 auto;
+            position: relative;
             #del_ask{
-                position: relative;
+                position: absolute;
                 top: 62px;
-                left: 50px;
+                left: 40px;
             }
             #del_yes{
-                position: relative;
+                position: absolute;
                 top: 150px;
-                left: -50px;
+                right: 100px;
+                z-index: 10;
+                
             }
             #del_no{
-                position: relative;
-                left: 198px;
+                position: absolute;
+                float: right;
+                left: 100px;
                 top: 150px;
+                z-index: 10;
             }
         }
         
