@@ -21,6 +21,7 @@
            <li id="main"><a href="http://localhost:8081/admin">后台管理</a></li>
            <li id="user"><a href="#user" id="a_user">用户管理</a></li>
            <li id="classify"><a href="#class" id="a_class">博文分类</a></li>
+           <li id="content"><a href="#content" id="a_content">博文内容</a></li>
            <li id="admin">海</li>
            <li id="day"></li>
        </ul>
@@ -37,6 +38,11 @@
                <span id="class_handle"><a href="#handle">管理分类</a> </span>                              
                <span id="class_mod" style="display: none"> - 修改类名</span>
                <span id="class_del" style="display: none"> - 删除类名</span>               
+            </li>
+            <li class="index2" style="display: none">
+                <span id="content_add"><a href="#content">添加博客</a></span>
+               <span>-</span>               
+               <span id="content_handle"><a href="#content_handle">管理博客</a> </span>  
             </li>
        </ol>
    </div>
@@ -87,6 +93,24 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div id="blogcontent" style="display: none">
+            <div id="blogadd">
+
+                <iframe id="iframe_display" name="iframe_display" style="display: none;"></iframe>
+                <form action="http://localhost:8081/admin/content/add" method="POST" target="iframe_display">
+                    <span id="text">请选择分类</span>
+                    <select name="id" id="blog_type">
+                        <!-- <option id="option" value="">1</option>
+                        <option id="option" value="">2</option>
+                        <option id="option" value="">3</option> -->
+                    </select>
+                    <input type="text" name="title" id="blog_title" placeholder="请输入文章标题">
+                    <textarea type="text" name="content" id="blog_data" placeholder="请输入文章内容" cols="30" rows="10"></textarea>
+                    <input type="submit" value="提交" id="blog_submit">
+                </form>
+                
             </div>
         </div>
       
