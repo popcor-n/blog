@@ -101,11 +101,14 @@ window.addEventListener('hashchange',function(){
           
             titleol.getElementsByClassName('index1')[0].style.display = 'inline-block';
             titleol.getElementsByClassName('index')[0].style.display = 'none';
+            titleol.getElementsByClassName('index2')[0].style.display = 'none';
             
             document.getElementById('a_class').style.color = 'rgb(124, 169, 226)';
             document.getElementById('a_user').style.color = '#888';
+            document.getElementById('a_content').style.color = '#888';
             document.getElementById('addclass').style.display = 'block';
             document.getElementById('handleclass').style.display = 'none';
+            document.getElementById('blogcontent').style.display = 'none';
             document.getElementById('modclass').style.display = 'none';
             document.getElementById('delclass').style.display='none';                
             document.getElementById('class_del').style.display = 'none';        
@@ -140,10 +143,13 @@ window.addEventListener('hashchange',function(){
             document.getElementsByTagName('ol')[0].style.display = 'inline-block'; 
             document.getElementById('userdata').style.display = 'block';
             document.getElementById('blogclass').style.display = 'none';
+            document.getElementById('blogcontent').style.display = 'none';
             titleol.getElementsByClassName('index1')[0].style.display = 'none';
             titleol.getElementsByClassName('index')[0].style.display = 'inline-block'; 
+            titleol.getElementsByClassName('index2')[0].style.display = 'none';
             document.getElementById('a_user').style.color = 'rgb(124, 169, 226)';
             document.getElementById('a_class').style.color = '#888';
+            document.getElementById('a_content').style.color = '#888';
             document.getElementById('class_mod').style.display = 'none';
         
         }
@@ -151,6 +157,44 @@ window.addEventListener('hashchange',function(){
         xhruser.setRequestHeader("Content-type","application/json");
         var u_json = {req:'users'};
         xhruser.send(JSON.stringify(u_json));
+    }
+    else if(hash == '#content'){
+        document.getElementById('userdata').style.display = 'none';
+        document.getElementById('blogclass').style.display = 'none';  
+        document.getElementById('blogcontent').style.display = 'block';  
+        document.getElementsByTagName('ol')[0].style.display = 'inline-block';     
+        //让该展示的副选项卡部分展示
+      
+        titleol.getElementsByClassName('index2')[0].style.display = 'inline-block';
+        titleol.getElementsByClassName('index')[0].style.display = 'none';
+        titleol.getElementsByClassName('index1')[0].style.display = 'none';
+        document.getElementById('a_user').style.color = '#888';
+        document.getElementById('a_class').style.color = '#888';
+        document.getElementById('a_content').style.color = 'rgb(124, 169, 226)';
+        var xhr = new XMLHttpRequest();
+        var removeAllChild = function (){
+        　　var div = document.getElementById("div1");
+        　　while(div.hasChildNodes()) //当div下还存在子节点时 循环继续
+        　　{
+        　　　　div.removeChild(div.firstChild);
+        　　}
+        }
+        xhr.onload = function(){
+            var output = JSON.parse(xhr.responseText);
+            console.log(output);
+            while(document.getElementById('blog_type').hasChildNodes()){
+                　　　document.getElementById('blog_type').removeChild(document.getElementById('blog_type').firstChild);
+            }
+            for(let i in output.message){
+                document.getElementById('blog_type').innerHTML+='<option value='+output.message[i]._id+'>'+output.message[i].name+'</option>';
+            }
+        }
+        xhr.open('POST','http://localhost:8081/admin/content',true);
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.send(JSON.stringify({req:'blogclass'}));
+    }
+    else if(hash =='#content_handle'){
+        
     }
     else if(hash == '#handle' ){
         document.getElementById('delclass').style.display='none';    
