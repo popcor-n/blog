@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/User');
 var Classify = require('../models/Classify');
+var Content = require('../models/Content');
+
 router.get('/',function(req,res,next){
    
     res.redirect('http://localhost:8080/dist/about/about.html')
@@ -78,5 +80,29 @@ router.post('/classify/delete',function(req,res){
          res.json(Responsedata);
     });
     
+})
+Classify.find().then(function(classify){
+    router.post('/content',function(req,res){
+        console.log(req.body);
+        Responsedata.message = classify;
+        res.json(Responsedata);
+    })
+})
+router.post('/content/add',function(req,res){
+    if(req.body.title == '' || req.body.content == ''){
+        Responsedata.code = 1;
+        Responsedata.message = '必填项不能为空';
+    }
+    else{
+        new Content({
+            classify:req.body.id,
+            title:req.body.title,
+            content:req.body.content
+        }).save().then(function(rs){
+            Responsedata.message = '保存成功';
+        })
+    }
+    console.log(req.body);
+    res.json(Responsedata);
 })
 module.exports = router;
