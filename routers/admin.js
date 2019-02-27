@@ -24,6 +24,8 @@ User.find().then(function(users){
     router.post('/user',function(req,res){
         // console.log(req.body);
         Responsedata.message = users;
+        // console.log(Responsedata.message);
+        // console.log(users);
         res.json(Responsedata);
     })
 })
@@ -52,11 +54,21 @@ router.post('/classify/add',function(req,res){
         res.json(Responsedata);
     })
 })
-Classify.find().then(function(classify){
-    router.post('/classify/handle',function(req,res){
-        // console.log(req.body);
-        Responsedata.message = classify;
-        res.json(Responsedata);
+// Classify.find().then(function(classify){
+//     router.post('/classify/handle',function(req,res){
+//         // console.log(req.body);
+//         Responsedata.message = classify;
+//         console.log(classify);
+//         res.json(Responsedata);
+//     })
+// })
+
+router.post('/classify/handle',function(req,res){
+    Classify.find().then(function(classify){
+    // console.log(req.body);
+    Responsedata.message = classify;
+    console.log(Responsedata.message);
+    res.json(Responsedata);
     })
 })
 router.post('/classify/modify',function(req,res){
@@ -68,6 +80,7 @@ router.post('/classify/modify',function(req,res){
         fs.name = name;
         fs.save();
         Responsedata.message = '修改成功';
+
         res.json(Responsedata);
     })
    
@@ -77,15 +90,17 @@ router.post('/classify/delete',function(req,res){
     var name = req.body.name;
     Classify.deleteOne({name:name}).then(function(){
         Responsedata.message = '删除成功';
-         res.json(Responsedata);
+     
+        res.json(Responsedata);
     });
     
 })
-Classify.find().then(function(classify){
-    router.post('/content',function(req,res){
-        console.log(req.body);
-        Responsedata.message = classify;
-        res.json(Responsedata);
+
+router.post('/content',function(req,res){
+    Classify.find().then(function(classify){
+    console.log(req.body);
+    Responsedata.message = classify;
+    res.json(Responsedata);
     })
 })
 router.post('/content/add',function(req,res){
@@ -104,5 +119,22 @@ router.post('/content/add',function(req,res){
     }
     console.log(req.body);
     res.json(Responsedata);
+})
+
+router.post('/content/handle',function(req,res){
+    Content.find().populate('classify').then(function(contents){
+        // console.log(contents);
+        Responsedata.message = contents;
+        res.json(Responsedata);
+    })
+})
+router.post('/content/delete',function(req,res){
+    console.log(req.body);
+    var id = req.body.id;
+    Content.deleteOne({_id:id}).then(function(){
+        Responsedata.message = '删除成功';
+         res.json(Responsedata);
+    });
+    
 })
 module.exports = router;
