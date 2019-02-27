@@ -1,34 +1,50 @@
 import scss from './index.scss';
 
-var passnum = 1;
-var passBox = document.getElementById('passBox');
-passBox.addEventListener('click',function fir(){
-    if(passnum == 1){
-        var l = 0;
-        var move = setInterval(function() {
-             l+= 0.03;
-            passBox.style.top = passBox.offsetTop + l + 'px';
-            if(passBox.offsetTop >= 200){
-                window. clearInterval(move);
-                passnum = 0;
-             }
-        }, 30)
-    }
+// var passnum = 1;
+// var passBox = document.getElementById('passBox');
+// passBox.addEventListener('click',function fir(){
+//     if(passnum == 1){
+//         var l = 0;
+//         var move = setInterval(function() {
+//              l+= 0.03;
+//             passBox.style.top = passBox.offsetTop + l + 'px';
+//             if(passBox.offsetTop >= 200){
+//                 window. clearInterval(move);
+//                 passnum = 0;
+//              }
+//         }, 30)
+//     }
   
-})
-passBox.addEventListener('click',function sec(){
-    //预留3dcss3转化
-    if(passnum != 1){
-        document.getElementById('passCover').style.display = 'none';
-    }
-})
-document.getElementById ('bt').addEventListener('click',function(){
-    if(document.getElementById('pass').getElementsByTagName('input')[0].value == 'Admin'){
-        console.log('ok');
-       // 以及上下拼接效果 完成后台功能后添加
+// })
+// passBox.addEventListener('click',function sec(){
+//     //预留3dcss3转化
+//     if(passnum != 1){
+//         document.getElementById('passCover').style.display = 'none';
+//     }
+// })
+// document.getElementById ('bt').addEventListener('click',function(){
+//     if(document.getElementById('pass').getElementsByTagName('input')[0].value == 'Admin'){
+//         console.log('ok');
+//        // 以及上下拼接效果 完成后台功能后添加
 
-       passBox.style.display = 'none';
+//        passBox.style.display = 'none';
 
+//     }
+// })
+document.getElementById('head_submit').addEventListener('click',function(){
+    if(document.getElementById('head_password').value == 'Admin'){
+        // document.getElementById('body').style.opacity = 
+        var times = setInterval(function(){
+            document.getElementById('body').style.opacity -= 0.01;
+            if(document.getElementById('body').style.opacity <= 0){
+                document.getElementById('body').style.display = 'none';
+                window.clearInterval(times);
+                 window.location.hash = '#user';
+                
+            }
+        } ,10);
+        document.getElementById('head_window').style.display = 'none';
+        document.getElementById('title').style.display = 'block';
     }
 })
 var myDate = new Date();
@@ -77,7 +93,7 @@ document.getElementById('go_name').addEventListener('click',function(){
 
 //分类列表ajax逻辑
 var data_class;
-
+var data_blog;
 
 //spa
 window.addEventListener('hashchange',function(){
@@ -111,7 +127,10 @@ window.addEventListener('hashchange',function(){
             document.getElementById('blogcontent').style.display = 'none';
             document.getElementById('modclass').style.display = 'none';
             document.getElementById('delclass').style.display='none';                
-            document.getElementById('class_del').style.display = 'none';        
+            document.getElementById('class_del').style.display = 'none'; 
+            document.getElementById('bloghandle').style.display = 'none';    
+            document.getElementById('blogdelete').style.display = 'none';
+            document.getElementById('bloghandle').style.display = 'none';
         }
         xhr.open('POST','http://localhost:8081/admin/classify',true);
         xhr.setRequestHeader("Content-type","application/json");
@@ -151,6 +170,9 @@ window.addEventListener('hashchange',function(){
             document.getElementById('a_class').style.color = '#888';
             document.getElementById('a_content').style.color = '#888';
             document.getElementById('class_mod').style.display = 'none';
+            document.getElementById('blogdelete').style.display = 'none';
+            
+            document.getElementById('bloghandle').style.display = 'none';
         
         }
         xhruser.open('POST','http://localhost:8081/admin/user',true);
@@ -161,8 +183,15 @@ window.addEventListener('hashchange',function(){
     else if(hash == '#content'){
         document.getElementById('userdata').style.display = 'none';
         document.getElementById('blogclass').style.display = 'none';  
+        document.getElementById('bloghandle').style.display = 'none';
         document.getElementById('blogcontent').style.display = 'block';  
-        document.getElementsByTagName('ol')[0].style.display = 'inline-block';     
+        document.getElementById('blogadd').style.display = 'block';
+        document.getElementsByTagName('ol')[0].style.display = 'inline-block';   
+        document.getElementById('pic').style.left ='204px';  
+        document.getElementById('blogdelete').style.display = 'none';
+        document.getElementById('blog_del').style.display = 'none';  
+        document.getElementById('handleclass').style.display = 'none';     
+        
         //让该展示的副选项卡部分展示
       
         titleol.getElementsByClassName('index2')[0].style.display = 'inline-block';
@@ -172,13 +201,7 @@ window.addEventListener('hashchange',function(){
         document.getElementById('a_class').style.color = '#888';
         document.getElementById('a_content').style.color = 'rgb(124, 169, 226)';
         var xhr = new XMLHttpRequest();
-        var removeAllChild = function (){
-        　　var div = document.getElementById("div1");
-        　　while(div.hasChildNodes()) //当div下还存在子节点时 循环继续
-        　　{
-        　　　　div.removeChild(div.firstChild);
-        　　}
-        }
+        
         xhr.onload = function(){
             var output = JSON.parse(xhr.responseText);
             console.log(output);
@@ -188,13 +211,60 @@ window.addEventListener('hashchange',function(){
             for(let i in output.message){
                 document.getElementById('blog_type').innerHTML+='<option value='+output.message[i]._id+'>'+output.message[i].name+'</option>';
             }
+            // document.getElementById('blog_submit').addEventListener('click',function(){
+            //     document.getElementById('blog_title').value = '';
+            //     document.getElementById('blog_data').value = '';
+                
+            // })
         }
         xhr.open('POST','http://localhost:8081/admin/content',true);
         xhr.setRequestHeader("Content-type","application/json");
         xhr.send(JSON.stringify({req:'blogclass'}));
     }
     else if(hash =='#content_handle'){
-        
+        while(document.getElementById('blogtable').hasChildNodes()){
+            　　　document.getElementById('blogtable').removeChild(document.getElementById('blogtable').firstChild);
+        }
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(){
+             while(document.getElementById('blogtable').hasChildNodes()){
+                　　　document.getElementById('blogtable').removeChild(document.getElementById('blogtable').firstChild);
+            }
+            var output = JSON.parse(xhr.responseText);
+            console.log(output);
+            data_blog = output.message;
+           
+            document.getElementById('blogtable').innerHTML = '<tr><th>id</th><th>分类</th><th>标题</th><th>内容截取</th><th>操作</th></tr>'
+            for(var i in output.message){
+                if(output.message[i].classify){
+                    var tr = document.createElement('tr');
+                    tr.setAttribute('id','blog_'+i.toString());
+                    document.getElementById('blogtable').appendChild(tr);
+                    document.getElementById('blog_'+i.toString()).innerHTML = '<td>'+output.message[i]._id.toString()+ '</td><td>'+ output.message[i].classify.name.toString()+ '</td><td>'+ output.message[i].title+'</td><td>'+output.message[i].content.substr(0,10)+'...</td><td><a href='+"#blog-modify"+i.toString()+'>修改<a> - <a href='+"#blog-delete"+i.toString() +'>删除<a></td>';
+                    document.getElementById('pic').style.left ='290px';
+                }
+               
+            }
+            document.getElementById('blogadd').style.display = 'none';
+            document.getElementById('bloghandle').style.display = 'block';
+            document.getElementById('blogdelete').style.display = 'none';
+            document.getElementById('bloghandle').style.opacity = 1;         
+            document.getElementById('blog_del').style.display = 'none';  
+            titleol.getElementsByClassName('index2')[0].style.display = 'inline-block';
+            titleol.getElementsByClassName('index')[0].style.display = 'none';
+            titleol.getElementsByClassName('index1')[0].style.display = 'none';
+            document.getElementById('a_user').style.color = '#888';
+            document.getElementById('a_class').style.color = '#888';
+            document.getElementById('a_content').style.color = 'rgb(124, 169, 226)';
+            document.getElementById('blogclass').style.display = 'none';    
+            document.getElementById('blogcontent').style.display = 'block';
+            pic.style.opacity = 0.6;
+            pic.style.left = '290px';
+            document.getElementById('blog_del').style.display = 'none';  
+        }
+        xhr.open('POST','http://localhost:8081/admin/content/handle',true);
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.send(JSON.stringify({req:'bloghandle'}));
     }
     else if(hash == '#handle' ){
         document.getElementById('delclass').style.display='none';    
@@ -204,7 +274,16 @@ window.addEventListener('hashchange',function(){
         pic.style.opacity = 0.6;
         document.getElementById('modclass').style.display = 'none';
         document.getElementById('class_mod').style.display = 'none';
-        document.getElementById('class_del').style.display = 'none';        
+        document.getElementById('class_del').style.display = 'none';  
+        titleol.getElementsByClassName('index1')[0].style.display = 'inline-block';
+        titleol.getElementsByClassName('index')[0].style.display = 'none';
+        titleol.getElementsByClassName('index2')[0].style.display = 'none';
+        
+        document.getElementById('a_class').style.color = 'rgb(124, 169, 226)';
+        document.getElementById('a_user').style.color = '#888';
+        document.getElementById('a_content').style.color = '#888';
+        document.getElementById('blogcontent').style.display = 'none';
+        document.getElementById('blogclass').style.display = 'block';
         var xhr = new XMLHttpRequest();
         xhr.onload = function(){
             var output = JSON.parse(xhr.responseText);
@@ -212,6 +291,10 @@ window.addEventListener('hashchange',function(){
             data_class =  output.message;
             console.log(data_class);
             document.getElementById('pic').style.left ='290px';
+            while(document.getElementById('classtable').hasChildNodes()){
+                　　　document.getElementById('classtable').removeChild(document.getElementById('classtable').firstChild);
+            }
+            document.getElementById('classtable').innerHTML = '<tr><th>分类名</th><th>id</th><th>操作</th></tr>'
             for(var i in output.message){
                 var tr = document.createElement('tr');
                 tr.setAttribute('id','class_'+i.toString());
@@ -244,7 +327,7 @@ window.addEventListener('hashchange',function(){
                     console.log(output);
                     document.getElementsByClassName('show')[1].style.display = 'block';  
                     document.getElementsByClassName('show')[1].innerHTML = output.message.toString();   
-                   
+                    window.location.hash = '#handle';
                     
                 }
                 xhr.open('POST','http://localhost:8081/admin/classify/modify',true)
@@ -296,18 +379,45 @@ window.addEventListener('hashchange',function(){
                 var xhr = new XMLHttpRequest();
                 xhr.onload = function(){
                    console.log(JSON.parse(xhr.responseText));
-                    
+                   window.location.hash = '#handle';  
                 }
                 xhr.open('POST','http://localhost:8081/admin/classify/delete',true)
                 xhr.setRequestHeader("Content-type","application/json");
                 xhr.send(JSON.stringify({name:delname}));
                 
             }
+                           
+            
             return;
+        }
+    }
+    for(let i in data_blog){
+        if(hash=='#blog-modify'+i.toString()){
             
         }
-        
-        
+        else if(hash=='#blog-delete'+i.toString()){
+            document.getElementById('blog_del').style.display = 'inline';           
+            document.getElementById('blogdelete').style.display='block';                
+            document.getElementById('bloghandle').style.opacity = 0.4;
+            pic.style.opacity = 0.2;
+            pic.style.left = '367px';
+            document.getElementById('delName').innerHTML = data_blog[i].title;
+            var del_id = data_blog[i]._id;
+            document.getElementById('delYes').addEventListener('click',function(){
+                let xhr = new XMLHttpRequest();
+                xhr.onload = function(){
+                    let output = JSON.parse(xhr.responseText);
+                    console.log(output);
+                    window.location.hash = '#content_handle';                    
+                    
+                }
+                xhr.open('POST','http://localhost:8081/admin/content/delete',true);
+                xhr.setRequestHeader("Content-type","application/json");
+                xhr.send(JSON.stringify({id:del_id}));
+            })
+            
+            return;
+        }
     }
 
     
