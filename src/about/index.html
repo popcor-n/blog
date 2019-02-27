@@ -8,17 +8,27 @@
 </head>
 <body>
     <!-- 密码确认卡 -->
-    <div id="passBox">
+    <!-- <div id="passBox">
         <div id="pass">
             <input type="password" placeholder=" 请再一次输入管理员密码">
             <div id="bt">确认</div>
         </div>
         <div id="passCover"></div>
+    </div> -->
+    <div id="body" style="opacity: 1;">
+        <div class="form" id="head_window">
+            <div class="forceColor"></div>
+            <div class="topbar">
+              <!-- <div class="spanColor"></div> -->
+              <input type="password" class="input" id="head_password" placeholder="Password"/>
+            </div>
+            <button class="submit" id="head_submit" >Login</button>
+          </div>
     </div>
     <!-- 主选项卡 -->
-   <div id="title">
+   <div id="title" style="display: none">
        <ul>
-           <li id="main"><a href="http://localhost:8081/admin">后台管理</a></li>
+           <li id="main"><a href="http://localhost:8081/admin">管理端 </a></li>
            <li id="user"><a href="#user" id="a_user">用户管理</a></li>
            <li id="classify"><a href="#class" id="a_class">博文分类</a></li>
            <li id="content"><a href="#content" id="a_content">博文内容</a></li>
@@ -43,6 +53,7 @@
                 <span id="content_add"><a href="#content">添加博客</a></span>
                <span>-</span>               
                <span id="content_handle"><a href="#content_handle">管理博客</a> </span>  
+               <span id="blog_del" style="display: none"> - 删除博客</span>                              
             </li>
        </ol>
    </div>
@@ -81,7 +92,7 @@
             </div>
             <div id="delclass" style="display: none">
                 <span id="del_ask">确定要删除 <span id="del_index"></span> 这个分类嘛？</span>
-                <a href="#handle" id="del_yes">确定</a><a href="#handle" id="del_no">取消</a>
+                <span id="del_yes">确定</span><a href="#handle" id="del_no">取消</a>
             </div>
             <div id="handleclass" style="display: none">
                 <table>
@@ -112,6 +123,24 @@
                 </form>
                 
             </div>
+            <div id="bloghandle" style="display: none">
+                <table>
+                    <tbody id="blogtable">
+                        <tr>
+                            <th>id</th>
+                            <th>分类</th>
+                            <th>标题</th>
+                            <th>内容截取</th>
+                            <th>操作</th>                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="blogdelete" style="display: none">
+                <span id="delAsk">确定要删除标题为 <span id="delName"></span> 这个博客嘛？</span>
+                <span id="delYes">确定</span><a href="#content_handle" id="delNo">取消</a>
+            </div>
+            
         </div>
       
    </div>
