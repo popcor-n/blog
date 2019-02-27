@@ -8,8 +8,8 @@ router.use(function(req,res,next){
     }
     next();
 })
-Classify.find().then(function(classify){
-    router.post('/nav',function(req,res){
+router.post('/nav',function(req,res){
+    Classify.find().then(function(classify){
         // console.log(req.body);
         Responsedata.message = classify;
         res.json(Responsedata);
