@@ -15,5 +15,9 @@ module.exports =  new  mongoose.Schema({
     content:{
         type:String,
         default:''
+    },
+    oldcontent:{
+        type:String,
+        default:''
     }
 })
