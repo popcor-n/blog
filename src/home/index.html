@@ -8,46 +8,41 @@
     <!-- <link rel="stylesheet" type="text/css" href="./app.css"> -->
 </head>
 <body>
-    <header><div id="title">所学</div>
-        <div>
-                <nav id="nav">
-                    <div class="index"><a href="#css">css</a></div>
-                    <div class="index"><a href="#杂">杂</a> </div>
-                    <div class="index"><a href="#随笔">随笔</a> </div>
-                    <div class="index"><a href="#js">js</a></div> 
-                </nav>
-        </div>
-        
-    
-    </header>
-    
-    <div id="register">
-        <span>注册</span>
-        <div><span>用户名：</span><input type="text" class="user"></div>
-        <div><span> 密 码：&nbsp;&nbsp;&nbsp;</span><input type="password" class="pass"></div>
-        <div><span>重复密码:</span><input type="password" class="rePass"></div>
-        <div><button>注册</button></div>
-        <div><span id="re-log">已经注册过？请点这里登录</span></div>
-        <!-- 预定动画效果 -->
-        <div><span class="index"></span></div>
+    <div id="moveclass" style="margin-left: 0px">
+            <header><div id="title">随手所学</div>
+                <div>
+                    <nav id="nav">
+                    </nav>
+                </div>
+            </header>
+            <div id="contentbox"></div>
+            <div id="classcontentbox"></div>            
+            
     </div>
-    <div id="login" >
-        <span>登录</span>
-        <div><span>用户名：</span><input type="text" class="user"></div>
-        <div><span> 密 码：&nbsp;&nbsp;&nbsp;</span><input type="password" class="pass"></div>
-        <div><button>登录</button></div>
-        <div><span id="log-re">注册新用户</span></div>
-        <div><span class="index"></span></div>
-    </div>
-
-
-    <!-- <div id="first">
-       
-        <div class="one"></div>
-        <div class="two"></div>
-    </div> -->
-    <div id="userData">
-    </div>
-    <div id="admin"></div>
+    <div id="left" style="left: -330px; margin-left: 0px" >
+        <div id="clickbox" class="jiantou"></div>
+            <div id="register" style="margin-left: -150px ;" >
+                <h2>注册</h2>
+                <div><input type="text" class="user" placeholder="用户名"></div>
+                <div><input type="password" class="pass" placeholder="密码"></div>
+                <div><input type="password" class="rePass" placeholder="重复密码"></div>
+                <div><button>Get Started.</button></div>
+                <div id="re-log"style="margin-left: 0px">已经注册过？请点这里登录</div>
+           
+                <div id="re_back"><span class="index"></span></div>
+            </div>
+            <div id="login" style="margin-left: -150px ; display: none">
+                <h2>登录</h2>
+                <div><input type="text" class="user" placeholder="用户名"></div>
+                <div><input type="password" class="pass" placeholder="密码"></div>
+                <div><button>Let me in.</button></div>
+                <div id="log-re" style="margin-left: 0px">  注册新用户</div>
+                <div id="lo-back"><span class="index"></span></div>
+            </div>
+            <div id="userData" ></div>
+            <div id="admin"></div>
+ </div>
+ <div id="upicon" style="display: none"></div>
+   
 </body>
 </html>
