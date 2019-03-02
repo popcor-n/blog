@@ -354,7 +354,7 @@ ul li{
         
     }
     #blogcontent{
-        #blogadd{
+        #blogadd,#blogmod{
             form{
                 span{
                     position: absolute;
@@ -393,6 +393,33 @@ ul li{
                 
                 }
                 #blog_data{
+                    outline: #888;
+                    color: #888;
+                    border-radius: 21px;
+                    width: 80%;
+                    height: 350px;
+                    font-size: 17px;
+                    padding: 0 10px;
+                    display: inherit;
+                    margin: 0 auto;
+                    border: 2px solid #888;
+                    font-family: initial;
+                    top: 50px;
+                    position: relative;
+                }
+                #blog-title{
+                    outline: #888;
+                    color: #888;
+                    border-radius: 10px;
+                    width: 80%;
+                    height: 31px;
+                    font-size: 17px;
+                    padding: 0 10px;
+                    display: inherit;
+                    margin: 0 auto;
+                
+                }
+                #blog-data{
                     outline: #888;
                     color: #888;
                     border-radius: 21px;
