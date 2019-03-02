@@ -190,7 +190,11 @@ window.addEventListener('hashchange',function(){
         document.getElementById('pic').style.left ='204px';  
         document.getElementById('blogdelete').style.display = 'none';
         document.getElementById('blog_del').style.display = 'none';  
-        document.getElementById('handleclass').style.display = 'none';     
+        document.getElementById('handleclass').style.display = 'none';   
+        document.getElementById('blog_mod').style.display = 'none';          
+        document.getElementById('blogmod').style.display='none';                
+         
+          
         
         //让该展示的副选项卡部分展示
       
@@ -231,21 +235,22 @@ window.addEventListener('hashchange',function(){
                 　　　document.getElementById('blogtable').removeChild(document.getElementById('blogtable').firstChild);
             }
             var output = JSON.parse(xhr.responseText);
-            console.log(output);
+            console.log(output);            
             data_blog = output.message;
            
-            document.getElementById('blogtable').innerHTML = '<tr><th>id</th><th>分类</th><th>标题</th><th>内容截取</th><th>操作</th></tr>'
+            document.getElementById('blogtable').innerHTML = '<tr><th>id</th><th>分类</th><th>标题</th><th>操作</th></tr>'
             for(var i in output.message){
                 if(output.message[i].classify){
                     var tr = document.createElement('tr');
                     tr.setAttribute('id','blog_'+i.toString());
                     document.getElementById('blogtable').appendChild(tr);
-                    document.getElementById('blog_'+i.toString()).innerHTML = '<td>'+output.message[i]._id.toString()+ '</td><td>'+ output.message[i].classify.name.toString()+ '</td><td>'+ output.message[i].title+'</td><td>'+output.message[i].content.substr(0,10)+'...</td><td><a href='+"#blog-modify"+i.toString()+'>修改<a> - <a href='+"#blog-delete"+i.toString() +'>删除<a></td>';
+                    document.getElementById('blog_'+i.toString()).innerHTML = '<td>'+output.message[i]._id.toString()+ '</td><td>'+ output.message[i].classify.name.toString()+ '</td><td>'+ output.message[i].title+'</td><td><a href='+"#blog-modify"+i.toString()+'>修改<a> - <a href='+"#blog-delete"+i.toString() +'>删除<a></td>';
                     document.getElementById('pic').style.left ='290px';
                 }
                
             }
             document.getElementById('blogadd').style.display = 'none';
+            document.getElementById('blog_mod').style.display = 'none';                       
             document.getElementById('bloghandle').style.display = 'block';
             document.getElementById('blogdelete').style.display = 'none';
             document.getElementById('bloghandle').style.opacity = 1;         
@@ -258,6 +263,8 @@ window.addEventListener('hashchange',function(){
             document.getElementById('a_content').style.color = 'rgb(124, 169, 226)';
             document.getElementById('blogclass').style.display = 'none';    
             document.getElementById('blogcontent').style.display = 'block';
+            document.getElementById('blogmod').style.display='none';                
+            
             pic.style.opacity = 0.6;
             pic.style.left = '290px';
             document.getElementById('blog_del').style.display = 'none';  
@@ -393,10 +400,41 @@ window.addEventListener('hashchange',function(){
     }
     for(let i in data_blog){
         if(hash=='#blog-modify'+i.toString()){
+            document.getElementById('blog_del').style.display = 'none';           
+            document.getElementById('blog_mod').style.display = 'inline';           
+            document.getElementById('blogmod').style.display='block';                
+            pic.style.left = '367px';
+            document.getElementById('delclass').style.display='block';                
+            document.getElementById('bloghandle').style.display = 'none';
+            var mod_id = data_blog[i]._id;            
+            let xhr = new XMLHttpRequest();
+            xhr.onload = function(){
+                var output = JSON.parse(xhr.responseText);
+                console.log(output);
+                while(document.getElementById('blog-type').hasChildNodes()){
+                    　　　document.getElementById('blog-type').removeChild(document.getElementById('blog-type').firstChild);
+                }
+                for(let i in output.message){
+                    document.getElementById('blog-type').innerHTML+='<option value='+output.message[i]._id+'>'+output.message[i].name+'</option>';
+                }
+                for(let i = 0; i< output.message.length; i++){
+                    if(output.message[i]._id == output.classify){
+                        document.getElementById("blog-type")[i].selected=true;
+                    }
+                }
+                document.getElementById('blog-data').value = output.content;
+                document.getElementById('blog-title').value = output.title;
+                
+            }
+            xhr.open('POST','http://localhost:8081/admin/content/change_id',true);
+            xhr.setRequestHeader("Content-type","application/json");
+            xhr.send(JSON.stringify({id:mod_id}));
+     
             
         }
         else if(hash=='#blog-delete'+i.toString()){
-            document.getElementById('blog_del').style.display = 'inline';           
+            document.getElementById('blog_del').style.display = 'inline';  
+            document.getElementById('blog_mod').style.display = 'none';           
             document.getElementById('blogdelete').style.display='block';                
             document.getElementById('bloghandle').style.opacity = 0.4;
             pic.style.opacity = 0.2;
