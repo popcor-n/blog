@@ -1,4 +1,5 @@
 var express = require('express');
+var markdown = require('markdown').markdown;
 var router = express.Router();
 var User = require('../models/User');
 var Classify = require('../models/Classify');
@@ -112,7 +113,8 @@ router.post('/content/add',function(req,res){
         new Content({
             classify:req.body.id,
             title:req.body.title,
-            content:req.body.content
+            oldcontent:req.body.content,
+            content:markdown.toHTML(req.body.content)
         }).save().then(function(rs){
             Responsedata.message = '保存成功';
         })
@@ -136,5 +138,39 @@ router.post('/content/delete',function(req,res){
          res.json(Responsedata);
     });
     
+})
+var change_id;
+router.post('/content/change_id',function(req,res){
+    // console.log(req.body);
+    change_id = req.body.id; 
+    Classify.find().then(function(classify){
+        Content.findOne({_id:change_id}).then(function(fs){
+            Responsedata.title = fs.title;
+            Responsedata.content = fs.oldcontent;
+            Responsedata.classify = fs.classify;            
+            Responsedata.message = classify;
+            console.log(Responsedata.classify);
+            res.json(Responsedata);
+        })
+       
+    })
+   
+
+   
+})
+router.post('/content/modify',function(req,res){
+    console.log(req.body);
+    console.log(change_id);
+    Content.findOne({_id:change_id}).then(function(fs){
+        console.log(fs);
+        fs.classify = req.body.id,
+        fs.title = req.body.title;
+        fs.content = markdown.toHTML(req.body.content)
+        fs.save();
+        Responsedata.message = '修改成功';
+
+        res.json(Responsedata);
+    })
+   
 })
 module.exports = router;
