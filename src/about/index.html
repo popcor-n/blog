@@ -53,6 +53,7 @@
                 <span id="content_add"><a href="#content">添加博客</a></span>
                <span>-</span>               
                <span id="content_handle"><a href="#content_handle">管理博客</a> </span>  
+               <span id="blog_mod" style="display: none"> - 修改博客</span>                                             
                <span id="blog_del" style="display: none"> - 删除博客</span>                              
             </li>
        </ol>
@@ -130,17 +131,47 @@
                             <th>id</th>
                             <th>分类</th>
                             <th>标题</th>
-                            <th>内容截取</th>
                             <th>操作</th>                            
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <div id="blogadd" style="display: none">
+
+                <iframe id="iframe_display" name="iframe_display" style="display: none;"></iframe>
+                <form action="http://localhost:8081/admin/content/add" method="POST" target="iframe_display">
+                    <span id="text">请选择分类</span>
+                    <select name="id" id="blog_type">
+                        <!-- <option id="option" value="">1</option>
+                        <option id="option" value="">2</option>
+                        <option id="option" value="">3</option> -->
+                    </select>
+                    <input type="text" name="title" id="blog_title" placeholder="请输入文章标题">
+                    <textarea type="text" name="content" id="blog_data" placeholder="请输入文章内容" cols="30" rows="10"></textarea>
+                    <input type="submit" value="提交" id="blog_submit">
+                </form>
+                
+            </div>
             <div id="blogdelete" style="display: none">
                 <span id="delAsk">确定要删除标题为 <span id="delName"></span> 这个博客嘛？</span>
                 <span id="delYes">确定</span><a href="#content_handle" id="delNo">取消</a>
             </div>
-            
+            <div id="blogmod" style="display: none">
+
+                <iframe id="iframe_display" name="iframe_display" style="display: none;"></iframe>
+                <form action="http://localhost:8081/admin/content/modify" method="POST" target="iframe_display">
+                    <span id="text">请选择分类</span>
+                    <select name="id" id="blog-type">
+                        <!-- <option id="option" value="">1</option>
+                        <option id="option" value="">2</option>
+                        <option id="option" value="">3</option> -->
+                    </select>
+                    <input type="text" name="title" id="blog-title" placeholder="请输入文章标题">
+                    <textarea type="text" name="content" id="blog-data" placeholder="请输入文章内容" cols="30" rows="10"></textarea>
+                    <input type="submit" value="提交" id="blog_submit">
+                </form>
+                
+            </div>
         </div>
       
    </div>
