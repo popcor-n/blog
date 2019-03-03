@@ -86,7 +86,8 @@ log.getElementsByTagName('button')[0].addEventListener('click',function(){
         if(outputLog.code == 0){
             if(outputLog.isadmin == true){
                 document.getElementById('userData').innerHTML = '你好，管理员！';
-                document.getElementById('admin').innerHTML = '<a href = http://localhost:8081/admin>管理页</a>';
+                // document.getElementById('admin').innerHTML = '<a href = http://localhost:8081/admin> -->管理页</a>';
+                document.getElementById('admin').style.display = 'block';
             }else{
                 document.getElementById('userData').innerHTML = '你好，欢迎'+outputLog.userData.name;
             }
@@ -105,6 +106,7 @@ log.getElementsByTagName('button')[0].addEventListener('click',function(){
 //分类展示
 var xhrindex = new XMLHttpRequest();
 var classData;
+var all_content;
 xhrindex.onload = function(){
     var output_nav = JSON.parse(xhrindex.responseText);
     classData = output_nav.message;
@@ -112,14 +114,8 @@ xhrindex.onload = function(){
     for(let i in output_nav.message){
         document.getElementById('nav').innerHTML += '<div class="index">'+'<a href=#'+output_nav.message[i].name +'>'+output_nav.message[i].name+'</a>'+'</div>'
     }
-    for(let i = 0; i < classData.length; i++){
-        document.getElementById('nav').getElementsByClassName('index')[i].addEventListener('click',function(){
-            if(nav.getElementsByClassName('current')[0]){
-                nav.getElementsByClassName('current')[0].classList.remove('current');
-            }
-            this.classList.add('current');
-        })
-    }
+    
+   
 }
 xhrindex.open('POST','http://localhost:8081/main/nav',true);
 xhrindex.setRequestHeader("Content-type","application/json");
@@ -130,6 +126,7 @@ var xhrcon = new XMLHttpRequest();
 xhrcon.onload = function(){
    let output = JSON.parse(xhrcon.responseText);
    console.log(output);
+   all_content = output;
    while(document.getElementById('contentbox').hasChildNodes()){
     　　　document.getElementById('contentbox').removeChild(document.getElementById('contentbox').firstChild);
     }
@@ -138,7 +135,7 @@ xhrcon.onload = function(){
         document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content.substr(0,200)+'...<br><p class = readmore id=readmore'+i+'><code>- 阅读剩余部分 -</code></p></div>';
        
         }else{
-            document.getElementById('contentbox').innerHTML+='<h2>'+output.message[i].title+'</h2><div id="content" class=content'+i+'>'+output.message[i].content+'</div>';
+            document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content+'</div>';
        }
    }
    for(let i in output.message){
@@ -200,22 +197,34 @@ document.getElementById('clickbox').addEventListener('click',leftBox)
 //选中hash逻辑
 window.addEventListener('hashchange',function(){
     var hash = document.location.hash;
-    for(var i = 0; i < classData.length; i++){
+    for(let i = 0; i < classData.length; i++){
+        // document.getElementById('nav').getElementsByClassName('index')[i].addEventListener('click',function(){
+        //     if(nav.getElementsByClassName('current')[0]){
+        //         nav.getElementsByClassName('current')[0].classList.remove('current');
+        //     }
+        //     this.classList.add('current');
+        // })
         if(hash == '#'+classData[i].name){
+            if(nav.getElementsByClassName('current')[0]){
+                        nav.getElementsByClassName('current')[0].classList.remove('current');
+                    }
+            document.getElementById('nav').getElementsByClassName('index')[i].classList.add('current');
+            
             console.log(classData[i].name);
             var xhrcon = new XMLHttpRequest();
             xhrcon.onload = function(){
                 let output = JSON.parse(xhrcon.responseText);
                 console.log(output);
+                
                 while(document.getElementById('contentbox').hasChildNodes()){
                     　　　document.getElementById('contentbox').removeChild(document.getElementById('contentbox').firstChild);
                 }
                 for(let i in output.message){
                     if(output.message[i].content.length >200){
-                        document.getElementById('contentbox').innerHTML+='<h2>'+output.message[i].title+'</h2><div id="content" class=content'+i+'>'+output.message[i].content.substr(0,200)+'...<br><br><p class = readmore id=readmore'+i+'>- 阅读剩余部分 -</p></div>';
+                        document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content.substr(0,200)+'...<br><br><p class = readmore id=readmore'+i+'>- 阅读剩余部分 -</p></div>';
                     
                         }else{
-                            document.getElementById('contentbox').innerHTML+='<h2>'+output.message[i].title+'</h2><div id="content" class=content'+i+'>'+output.message[i].content+'</div>';
+                            document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content+'</div>';
                     }
                 }
                 for(let i in output.message){
@@ -230,6 +239,58 @@ window.addEventListener('hashchange',function(){
             xhrcon.send(JSON.stringify({req:classData[i]._id}));
         }
     }
+    for(let i = 0; i < all_content.message.length; i++){
+        if(hash == '#'+all_content.message[i]._id){
+            let xhr = new XMLHttpRequest();
+            xhr.onload = function(){
+                var output = JSON.parse(xhr.responseText);
+                console.log(output);
+                while(document.getElementById('contentbox').hasChildNodes()){
+                    　　　document.getElementById('contentbox').removeChild(document.getElementById('contentbox').firstChild);
+                }
+                document.getElementById('contentbox').innerHTML+='<h2>'+output.message.title+'</h2><div id="content" class=content'+i+'>'+output.message.content+'</div>';                
+            }
+            xhr.open('POST','http://localhost:8081/main/content/one',true);
+            xhr.setRequestHeader("Content-type","application/json");
+            xhr.send(JSON.stringify({req:all_content.message[i]._id}));
+        }
+
+    }
+    if(hash == ''){
+        var xhrcon = new XMLHttpRequest();
+        xhrcon.onload = function(){
+        let output = JSON.parse(xhrcon.responseText);
+        console.log(output);
+        all_content = output;
+        while(document.getElementById('contentbox').hasChildNodes()){
+            　　　document.getElementById('contentbox').removeChild(document.getElementById('contentbox').firstChild);
+            }
+        for(let i in output.message){
+            if(output.message[i].content.length >200){
+                document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content.substr(0,200)+'...<br><p class = readmore id=readmore'+i+'><code>- 阅读剩余部分 -</code></p></div>';
+            
+                }else{
+                    document.getElementById('contentbox').innerHTML+='<h2><a href=#'+output.message[i]._id+'>'+output.message[i].title+'</a></h2><div id="content" class=content'+i+'>'+output.message[i].content+'</div>';
+            }
+        }
+        for(let i in output.message){
+                document.getElementById('readmore'+i).onclick = function(){
+                document.getElementsByClassName('content'+i)[0].innerHTML =output.message[i].content;
+                }
+        
+            }
+            for(let i = 0; i < classData.length; i++){
+                if(nav.getElementsByClassName('current')[0]){
+                    nav.getElementsByClassName('current')[0].classList.remove('current');
+                }
+            }
+        }
+        xhrcon.open('POST','http://localhost:8081/main/content',true);
+        xhrcon.setRequestHeader("Content-type","application/json");
+        xhrcon.send(JSON.stringify({req:'contents'}));
+    }
+    
+
 
 })
 
